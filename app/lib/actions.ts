@@ -30,6 +30,7 @@ export async function createInvoice(formData: FormData) {
   redirect('/dashboard/invoices');
 
 }
+
 export async function updateInvoice(id: string, formData: FormData) {
   const invoiceToUpdate = UpdateInvoiceSchema.parse(Object.fromEntries(formData.entries()));
   const amountInCents = invoiceToUpdate.amount * 100;
@@ -45,4 +46,13 @@ export async function updateInvoice(id: string, formData: FormData) {
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 
+}
+
+export async function deleteInvoice(id: string) {
+
+  await sql`
+    DELETE FROM invoices WHERE id = ${id}
+  `;
+ 
+  revalidatePath('/dashboard/invoices');
 }
